@@ -1,6 +1,5 @@
 import unittest
-
-from htmlnode import HTMLNode, LeafNode, ParentNode
+from htmlnode import LeafNode, ParentNode, HTMLNode
 
 class TestHtmlNode(unittest.TestCase):
     def test_to_html_props(self):
@@ -108,6 +107,8 @@ class TestHtmlNode(unittest.TestCase):
             "Child object is not the correct object, has to ParentNode or Leafnode"
         )
 
+    
 
+        
 if __name__ == "__main__":
     unittest.main()
