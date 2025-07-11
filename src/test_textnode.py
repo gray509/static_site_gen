@@ -9,6 +9,7 @@ class TestTextNode(unittest.TestCase):
         node2 = TextNode("This is a text node", TextType.BOLD)
         node3 = TextNode("This is a text node1", TextType.ITALIC, "urrrl")
         node4 = TextNode("This is a text node1", TextType.ITALIC, )
+
         self.assertEqual(node, node2)
         self.assertNotEqual(node, node3)
         self.assertNotEqual(node4, node3)
@@ -30,6 +31,7 @@ class TestTextNodeToHTMLNode(unittest.TestCase):
         node = TextNode("This is a link", TextType.LINK, "https://boot.dev")
         html_node = text_node_to_html_node(node)
         self.assertEqual(html_node.to_html(), '<a href="https://boot.dev">This is a link</a>')
+
 
 if __name__ == "__main__":
     unittest.main()
