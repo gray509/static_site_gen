@@ -1,7 +1,16 @@
 from textnode import TextNode, TextType
+from markdown_to_node import *
 def main():
-    test = TextNode("this is some test",  TextType.LINK, "https://www.boot.dev/lessons/cdae7fca-a7dc-4706-b2c5-7a03d66db1c9")
-    print(test)
+    md = """
+- This is **bolded** paragraph
+- text in a p
+- tag here
+
+This is another paragraph with _italic_ text and `code` here
+
+"""
+    
+    print(markdown_to_html_node(md).to_html())
 
 
 main()

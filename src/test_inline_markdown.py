@@ -1,6 +1,8 @@
 import unittest
 from textnode import TextNode, TextType
-from inline_markdown import split_nodes_delimiter, extract_markdown_links, extract_markdown_images, split_nodes_image, split_nodes_link
+from inline_markdown import (split_nodes_delimiter, extract_markdown_links, 
+                             extract_markdown_images, split_nodes_image, 
+                             split_nodes_link, text_to_textnodes)
 
 class TestSplitNodesDelimiter(unittest.TestCase):
         def test_one_textnode(self):
@@ -78,10 +80,6 @@ class TestSplitNodesDelimiter(unittest.TestCase):
             self.assertEqual(new_nodes[1], v_node1)
             self.assertEqual(new_nodes[2], v_node2)
 
-        def test_no_relevant_delimeter(self):
-            node = TextNode("This is text with a code block word", TextType.TEXT)
-            with self.assertRaises(ValueError):
-                new_nodes = split_nodes_delimiter([node], "**", TextType.BOLD)
 
         def test_delim_bold_double(self):
             node = TextNode(
@@ -145,6 +143,44 @@ class TestExtracLinkImages(unittest.TestCase):
                 ),
             ],
             new_nodes,
+        )
+class TestInlineMarkdownToNodes(unittest.TestCase):
+    def test_convert(self):
+        text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+        node = text_to_textnodes(text)
+
+        self.assertListEqual(
+            [
+                TextNode("This is ", TextType.TEXT),
+                TextNode("text", TextType.BOLD),
+                TextNode(" with an ", TextType.TEXT),
+                TextNode("italic", TextType.ITALIC),
+                TextNode(" word and a ", TextType.TEXT),
+                TextNode("code block", TextType.CODE),
+                TextNode(" and an ", TextType.TEXT),
+                TextNode("obi wan image", TextType.IMG, "https://i.imgur.com/fJRm4Vk.jpeg"),
+                TextNode(" and a ", TextType.TEXT),
+                TextNode("link", TextType.LINK, "https://boot.dev"),
+            ],
+            node
+        )
+    
+    def test_convert_no_bold(self):
+        text = "This is text with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+        node = text_to_textnodes(text)
+
+        self.assertListEqual(
+            [
+                TextNode("This is text with an ", TextType.TEXT),
+                TextNode("italic", TextType.ITALIC),
+                TextNode(" word and a ", TextType.TEXT),
+                TextNode("code block", TextType.CODE),
+                TextNode(" and an ", TextType.TEXT),
+                TextNode("obi wan image", TextType.IMG, "https://i.imgur.com/fJRm4Vk.jpeg"),
+                TextNode(" and a ", TextType.TEXT),
+                TextNode("link", TextType.LINK, "https://boot.dev"),
+            ],
+            node
         )
 
 if __name__ == "__main__":
