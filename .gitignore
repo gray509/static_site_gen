@@ -1,3 +1,3 @@
 __pycache__/
-/test_*
-pubilc/
+**/test_*
+public/

@@ -85,4 +85,36 @@ This is another paragraph with _italic_ text and `code` here
             "<div><ul><li>This is <b>bolded</b> paragraph</li><li>text in a p</li><li>tag here</li></ul><p>This is another paragraph with <i>italic</i> text and <code>code</code> here</p></div>",
         )
 
-        
+class TestMarkdownHeader(unittest.TestCase):
+    def test_h1_header(self):
+        md = "# hello"
+        result = extract_title(md)
+
+        self.assertEqual(result, "hello")
+
+    def test_no_header(self):
+        md = """
+- This is **bolded** paragraph
+- text in a p
+- tag here
+
+This is another paragraph with _italic_ text and `code` here
+
+"""
+        with self.assertRaises(ValueError) as context:
+            extract_title(md)
+        self.assertEqual(
+            str(context.exception),
+            "No h1 header"
+        )
+    
+    def test_h2_header(self):
+        md = "## hello"
+        with self.assertRaises(ValueError) as context:
+            extract_title(md)
+        self.assertEqual(
+            str(context.exception),
+            "No h1 header"
+        )
+
+    

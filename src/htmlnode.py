@@ -54,7 +54,7 @@ class ParentNode(HTMLNode):
 
             if isinstance(child, LeafNode):
                 if not child.value:
-                    raise ValueError("No value found for the children")
+                    raise ValueError(f"{child} No value found for the children")
         
         s = ""
         if self.props:

@@ -15,7 +15,7 @@ def markdown_to_html_node(markdown):
                 i = 0
                 while block[i] == "#":
                     i += 1
-                parent_html_node = ParentNode(f"h{i}",text_to_children(block[i+1]))
+                parent_html_node = ParentNode(f"h{i}",text_to_children(block[i+1:]))
             case BlockType.QUOTE:
                 lines = block.split("\n")
                 new_lines = []
@@ -53,3 +53,12 @@ def text_to_children(text):
         leaf_nodes.append(text_node_to_html_node(node))
     
     return leaf_nodes
+
+def extract_title(markdown):
+    blocks = markdown_to_blocks(markdown)
+
+    for block in blocks:
+         if block.startswith("# "):
+             return block[2:]
+    
+    raise ValueError("No h1 header")
