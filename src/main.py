@@ -4,10 +4,7 @@ import os, shutil
 import sys
 
 def main():
-    if sys.argv:
-        basepath = sys.argv[1]
-    else:
-        basepath = "/"
+    basepath = sys.argv[1] if len(sys.argv) > 1 else "/"
 
     copy_content_to_directory("./static", "./docs")
     
